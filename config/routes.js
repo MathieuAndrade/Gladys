@@ -86,6 +86,12 @@ module.exports.routes = {
   'get /brain/classify': 'BrainController.classify', 
   'post /brain/trainnew': 'BrainController.trainNew', 
 
+  // Calendar 
+  'get /calednars': 'CalendarController.index',
+  'post /calendar': 'CalendarController.create',
+  'patch /calendar/:id': 'CalendarController.update',
+  'delete /calendar/:id': 'CalendarController.delete',
+
   // CalendarEvent
   'get /calendarevent' : 'CalendarEventController.index',
   'get /calendarevent/all' : 'CalendarEventController.get',
@@ -100,7 +106,6 @@ module.exports.routes = {
   'patch /device/:id': 'DeviceController.update',
   'delete /device/:id': 'DeviceController.delete',
   'get /device/:id/devicetype': 'DeviceController.getDeviceTypes',
-  
   
   // DeviceState
   'get /devicestate': 'DeviceStateController.index',
@@ -266,7 +271,6 @@ module.exports.routes = {
   'patch /token/:id': 'TokenController.update',
   'delete /token/:id': 'TokenController.delete',
   
-  
   // Update
   'get /update/verify': 'UpdateController.verify',
   'get /update/action': 'UpdateController.updateActions',
@@ -287,7 +291,6 @@ module.exports.routes = {
   'delete /user/:id': 'UserController.delete',
   'get /user/whoami': 'UserController.whoami',
   'post /user/:user_id/house/:house_id/seen': 'UserController.seen',
-
 
   // Weather
   'get /weather': 'WeatherController.get'

@@ -7,7 +7,7 @@
   * @author :: Pierre-Gilles Leymarie
   */
   
-(function () {
+ (function () {
   'use strict';
 
   angular
@@ -20,10 +20,15 @@
     /* jshint validthis: true */
     var vm = this;
     vm.user = 1;
-    vm.dayEvents = [];
     vm.allEvents = [];
-    vm.loadAllEvents = loadAllEvents;
+    vm.allCalendars = []
+    vm.newCalendar;
 
+    vm.loadAllEvents = loadAllEvents;
+    vm.createCalendar = createCalendar;
+    vm.updateCalendar = updateCalendar;
+    vm.changeCalendarState = changeCalendarState;
+    vm.deleteCalendar = deleteCalendar;
     vm.activateCalendar = activateCalendar;
 
     activate();
@@ -34,6 +39,7 @@
         activateCalendar(language);
       });
       loadAllEvents();
+      getCalendars()
       return ;
     }
 
@@ -56,6 +62,56 @@
         editable: true,
         droppable: true,
       })
+    }
+
+    function getCalendars(){
+      return calendarService.getCalendars()
+        .then(function(data){
+          vm.allCalendars = data.data
+        })
+    }
+
+    function createCalendar(calendar){
+
+      // Set defaut values
+      calendar.active = 1
+      calendar.service = 'gladys'
+      calendar.externalid = generateUuid()
+
+      if(!calendar.color) calendar.color = '#3c8dbc'
+
+      return calendarService.createCalendar(calendar)
+        .then(function(){
+          getCalendars()
+        })
+        .catch(function(){
+          notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+        });
+    }
+
+    function updateCalendar(calendar){
+
+      if(!calendar.color) calendar.color = '#3c8dbc'
+      
+      return calendarService.updateCalendar(calendar.id, calendar)
+        .then(function(){
+          getCalendars()
+        })
+        .catch(function(){
+          notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+        });
+    }
+
+    function changeCalendarState(calendar){
+      calendar.active = !calendar.active
+      updateCalendar(calendar)
+    }
+
+    function deleteCalendar(calendar){
+      return calendarService.destroyCalendar(calendar.id)
+        .then(function(){
+          getCalendars()
+        })
     }
 
     function loadAllEvents() {
@@ -82,6 +138,13 @@
           $('#calendar').fullCalendar('addEventSource', events)
 
         });
+    }
+
+    function generateUuid(){
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
     }
 
   }

@@ -29,6 +29,7 @@ var cssFilesToInject = [
   'styles/disable-hyperlinks.css',
   'styles/box.css',
   'styles/nav-tabs-custom.css',
+  'styles/checkbox.css',
   'js/angular-bootstrap-calendar/angular-bootstrap-calendar.min.css',
 
   //Inject AdminLTE files
