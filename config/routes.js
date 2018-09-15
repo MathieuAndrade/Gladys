@@ -95,6 +95,9 @@ module.exports.routes = {
   // CalendarEvent
   'get /calendarevent' : 'CalendarEventController.index',
   'get /calendarevent/all' : 'CalendarEventController.get',
+  'post /calendarevent/create' : 'CalendarEventController.create',
+  'patch /calendarevent/:id' : 'CalendarEventController.update',
+  'delete /calendarevent/:id' : 'CalendarEventController.delete',
   
   //Category
   'get /category': 'CategoryController.index',

@@ -1,11 +1,3 @@
-/** 
-  * Gladys Project
-  * http://gladysproject.com
-  * Software under licence Creative Commons 3.0 France 
-  * http://creativecommons.org/licenses/by-nc-sa/3.0/fr/
-  * You may not use this software for commercial purposes.
-  * @author :: Pierre-Gilles Leymarie
-  */
   
  (function () {
   'use strict';
@@ -14,15 +6,14 @@
     .module('gladys')
     .controller('calendarCtrl', calendarCtrl);
 
-  calendarCtrl.$inject = ['calendarService', 'userService'];
+  calendarCtrl.$inject = ['calendarService', 'userService' , 'notificationService'];
 
-  function calendarCtrl(calendarService, userService) {
+  function calendarCtrl(calendarService, userService, notificationService) {
     /* jshint validthis: true */
     var vm = this;
     vm.user = 1;
     vm.allEvents = [];
     vm.allCalendars = []
-    vm.newCalendar;
 
     vm.loadAllEvents = loadAllEvents;
     vm.createCalendar = createCalendar;
@@ -61,6 +52,20 @@
         locale: language,
         editable: true,
         droppable: true,
+        eventDrop: function(event) {
+
+          return calendarService.updateCalendarEvent(event.id, {start: event.start.format(), end: event.end.format()})
+            .catch(function(){
+              notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+            });
+        },
+        eventResize: function(event) {
+
+          return calendarService.updateCalendarEvent(event.id, {start: event.start.format(), end: event.end.format()})
+            .catch(function(){
+              notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+            });
+        }
       })
     }
 
@@ -81,8 +86,8 @@
       if(!calendar.color) calendar.color = '#3c8dbc'
 
       return calendarService.createCalendar(calendar)
-        .then(function(){
-          getCalendars()
+        .then(function(data){
+          vm.allCalendars.push(data.data[0])
         })
         .catch(function(){
           notificationService.errorNotificationTranslated('DEFAULT.ERROR');
@@ -90,12 +95,11 @@
     }
 
     function updateCalendar(calendar){
-
-      if(!calendar.color) calendar.color = '#3c8dbc'
-      
+      if(!calendar.color || calendar.color == '') calendar.color = '#3c8dbc'
+    
       return calendarService.updateCalendar(calendar.id, calendar)
         .then(function(){
-          getCalendars()
+          loadAllEvents()
         })
         .catch(function(){
           notificationService.errorNotificationTranslated('DEFAULT.ERROR');
@@ -117,6 +121,7 @@
     function loadAllEvents() {
       return calendarService.loadAllEvents()
         .then(function(data){
+          $('#calendar').fullCalendar('removeEventSources')
           vm.allEvents = data.data;
 
           var events = new Array()
@@ -130,7 +135,7 @@
             event.start = vm.allEvents[i].start
             event.end = vm.allEvents[i].end
             event.allDay = vm.allEvents[i].fullday ? true : false 
-            event.color = '#3c8dbc'
+            event.color = vm.allEvents[i].color
 
             events.push(event)
 

@@ -12,6 +12,9 @@
         var service = {
             loadEvents: loadEvents,
             loadAllEvents: loadAllEvents,
+            createCalendarEvent: createCalendarEvent,
+            updateCalendarEvent: updateCalendarEvent,
+            destroyCalendarEvent: destroyCalendarEvent,
             getCalendars: getCalendars,
             createCalendar: createCalendar,
             updateCalendar: updateCalendar,
@@ -34,9 +37,23 @@
 
             return $http({method: 'GET', url: '/calendarevent', params: {start: start, end: end} });
         }
+        
+        // All about calendar events 
 
         function loadAllEvents() {
             return $http({method: 'GET', url: '/calendarevent/all'});
+        }
+
+        function createCalendarEvent(calendar) {
+            return $http({method: 'POST', url: '/calendarevent', data: calendar});
+        }
+        
+        function destroyCalendarEvent(id){
+            return $http({method: 'DELETE', url: '/calendarevent/' + id});
+        }
+        
+        function updateCalendarEvent(id, calendar) {
+            return $http({method: 'PATCH', url: '/calendarevent/' + id, data: calendar});
         }
         
         // All about calendars 
