@@ -15,6 +15,9 @@
     vm.allEvents = [];
     vm.allCalendars = []
 
+    var popup = null;
+    var popopContent = '<div> <select class="form-control"><option value="test1">test1</option><option value="test2">test2</option><option value="test3">test3</option><option value="test4">test4</option></select><input type="text" class="form-control pull-right"><input type="text" class="form-control pull-right" id="daterangepicker"></div>'
+
     vm.loadAllEvents = loadAllEvents;
     vm.createCalendar = createCalendar;
     vm.updateCalendar = updateCalendar;
@@ -31,6 +34,16 @@
       });
       loadAllEvents();
       getCalendars()
+      
+      // If the user clicks on something other than an event
+      // close popup if there are any
+      $("body").click(function(){
+        var $target = $(event.target);
+        if(!$target.is(".fc-event") && !$target.parents().is(".fc-event") && !$target.is(".popover") && !$target.parents().is(".popover")){
+          $(".popover").popover('destroy')
+        }
+      })
+
       return ;
     }
 
@@ -65,6 +78,21 @@
             .catch(function(){
               notificationService.errorNotificationTranslated('DEFAULT.ERROR');
             });
+        },
+        eventClick: function(calEvent, jsEvent, view) {
+          if(popup)$(".popover").popover('destroy')
+        
+          popup = $(jsEvent.currentTarget).popover({
+            placement:'auto',
+            html: true,
+            trigger : 'click',
+            animation : 'false',
+            container:'body',
+            content: function () {
+                return popopContent
+            },
+          }).popover('show');
+          
         }
       })
     }
