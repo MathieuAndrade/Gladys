@@ -34,5 +34,11 @@ module.exports = {
             type: 'string'
         },
 
+        user: {
+            type: 'User',
+            default: 0, // By default user 0 is Gladys
+        },
+
+
     }
 };

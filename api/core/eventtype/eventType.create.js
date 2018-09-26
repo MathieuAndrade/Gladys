@@ -12,7 +12,8 @@ var queries = require('./eventType.queries.js');
  * @param {String} type.service The service of eventType
  * @param {String} type.faIcon The faIcon of eventType
  * @param {String} type.iconColor The iconColor of eventType
- * @returns {EventType>} eventType
+ * @param {User} eventType.user The id of the eventType's user
+ * @returns {EventType} eventType
  * @example
  * var type = {
  *      code: "back-at-home",
@@ -21,7 +22,8 @@ var queries = require('./eventType.queries.js');
  *      category: "user", 
  *      service: "0",
  *      faIcon: "fa fa-home",
- *      iconColor: "bg-light-blue" 
+ *      iconColor: "bg-light-blue",
+ *      user: 1 
  * }
  * gladys.eventType.create(type)
  *      .then(function(eventType){
