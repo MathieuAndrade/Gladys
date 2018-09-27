@@ -35,8 +35,8 @@ module.exports = {
         },
 
         user: {
-            type: 'User',
-            default: 0, // By default user 0 is Gladys
+            model: 'User',
+            defaultsTo: 0, // By default user 0 is Gladys
         },
 
 
