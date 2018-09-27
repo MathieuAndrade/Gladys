@@ -88,5 +88,15 @@
 		"category": "user",
 		"faIcon": "fa fa-desktop",
 		"iconColor": "bg-black"
+	},
+	{
+		"id": 11,
+		"code": "on-the-way-to-work",
+		"name": "On the way to work",
+		"service": "house",
+		"category": "user",
+		"faIcon": "fa fa-car",
+		"iconColor": "bg-black",
+		"user": 1
 	}
 ]
