@@ -1,0 +1,39 @@
+
+<link rel="stylesheet" href="/styles/dependencies/fullcalendar/fullcalendar.css">
+<link rel="stylesheet" href="/styles/dependencies/fullcalendar/fullcalendarTheme.css">
+<script src="/js/dependencies/fullcalendar/fullcalendar.min.js"></script>
+<script src="/js/dependencies/fullcalendar/fullcalendar.locales.min.js"></script>
+
+<aside class="content-wrapper">
+  <section class="content-header">
+    <h1>
+        <%= __('Calendar') %>
+        <small><%= __('Control Panel') %></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><p><i class="fa fa-dashboard"></i> <%= __('Home') %></p></li>
+        <li class="active"><%= __('Calendar') %></li>
+    </ol>
+  </section>
+
+  <section class="content" data-ng-controller="calendarCtrl as vm">
+
+    <div class="row">
+      <div class="col-lg-2">
+        <div class="box box-solid box-primary">
+
+        </div>
+      </div>
+      <div class="col-lg-10">
+        <div class="box box-solid box-primary">
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</aside>
+
+<script>
+    document.getElementById("calendarLi").className = "active";
+</script>
