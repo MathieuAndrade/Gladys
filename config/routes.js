@@ -83,6 +83,12 @@ module.exports.routes = {
   'get /brain/classify': 'BrainController.classify',
   'post /brain/trainnew': 'BrainController.trainNew',
 
+  // Calendar 
+  'get /calednars': 'CalendarController.index',
+  'post /calendar': 'CalendarController.create',
+  'patch /calendar/:id': 'CalendarController.update',
+  'delete /calendar/:id': 'CalendarController.delete',
+
   // CalendarEvent
   'get /calendarevent': 'CalendarEventController.index',
   'get /calendarevent/all': 'CalendarEventController.get',

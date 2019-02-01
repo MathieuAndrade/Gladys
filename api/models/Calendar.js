@@ -26,6 +26,11 @@ module.exports = {
     user: {
       model: 'User',
       required: true
+    },
+
+    color: {
+      type: 'string',
+      defaultsTo: '#3c8dbc'
     }
   }
 };

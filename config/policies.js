@@ -33,7 +33,7 @@ module.exports.policies = {
   Box: ['checkToken'],
   BoxType: ['authenticated'],
   CalendarEvent: ['checkToken'],
-  CalendarList: ['checkToken'],
+  Calendar: ['checkToken'],
   Category: ['checkToken'],
   ChromeNotification: ['checkToken'],
   Dashboard: ['authenticated', 'localize'],

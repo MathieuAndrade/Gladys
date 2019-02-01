@@ -1,4 +1,4 @@
-
+  
 (function () {
   'use strict';
 
@@ -6,16 +6,22 @@
     .module('gladys')
     .controller('calendarCtrl', calendarCtrl);
 
-  calendarCtrl.$inject = ['calendarService', 'userService'];
+  calendarCtrl.$inject = ['calendarService', 'userService', '$scope'];
 
-  function calendarCtrl(calendarService, userService) {
+  function calendarCtrl(calendarService, userService, $scope) {
     /* jshint validthis: true */
     var vm = this;
     vm.user = 1;
-    vm.dayEvents = [];
     vm.allEvents = [];
-    vm.loadAllEvents = loadAllEvents;
+    vm.allCalendars = [];
+    vm.newCalendar = {};
+    vm.selectedCalendar = {};
 
+    vm.loadAllEvents = loadAllEvents;
+    vm.createCalendar = createCalendar;
+    vm.updateCalendar = updateCalendar;
+    vm.changeCalendarState = changeCalendarState;
+    vm.deleteCalendar = deleteCalendar;
     vm.activateCalendar = activateCalendar;
 
     activate();
@@ -26,6 +32,7 @@
           activateCalendar(language);
         });
       loadAllEvents();
+      getCalendars();
       return ;
     }
 
@@ -50,9 +57,74 @@
       });
     }
 
+    function getCalendars(){
+      return calendarService.getCalendars()
+        .then(function(data){
+          vm.allCalendars = data.data;
+        });
+    }
+
+    function createCalendar(calendar){
+
+      // Set default values
+      calendar.active = 1;
+      calendar.service = 'gladys';
+      calendar.externalid = generateUuid();
+
+      if(!calendar.color || calendar.color == '') { 
+        calendar.color = '#3c8dbc'; 
+      }
+
+      if(isInt(calendar.color)){
+        calendar.color = (calendar.color).toString(16);
+      }
+
+      return calendarService.createCalendar(calendar)
+        .then(function(data){
+          vm.allCalendars.push(data.data[0]);
+          resetNewCalendarFields();
+        })
+        .catch(function(){
+          notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+        });
+    }
+
+    function updateCalendar(calendar){
+
+      if(!calendar.color || calendar.color == '') {
+        calendar.color = '#3c8dbc';
+      }
+
+      if(isInt(calendar.color)){
+        calendar.color = (calendar.color).toString(16);
+      }
+      
+      return calendarService.updateCalendar(calendar.id, calendar)
+        .then(function(){
+          loadAllEvents();
+          resetSelectedCalendarFields();
+        })
+        .catch(function(){
+          notificationService.errorNotificationTranslated('DEFAULT.ERROR');
+        });
+    }
+
+    function changeCalendarState(calendar){
+      calendar.active = !calendar.active;
+      updateCalendar(calendar);
+    }
+
+    function deleteCalendar(calendar){
+      return calendarService.destroyCalendar(calendar.id)
+        .then(function(){
+          getCalendars();
+        });
+    }
+
     function loadAllEvents() {
       return calendarService.loadAllEvents()
         .then(function(data){
+          $('#calendar').fullCalendar('removeEventSources');
           vm.allEvents = data.data;
 
           var events = new Array();
@@ -66,7 +138,7 @@
             event.start = vm.allEvents[i].start;
             event.end = vm.allEvents[i].end;
             event.allDay = vm.allEvents[i].fullday ? true : false; 
-            event.color = '#3c8dbc';
+            event.color = vm.allEvents[i].color;
 
             events.push(event);
 
@@ -74,6 +146,27 @@
           $('#calendar').fullCalendar('addEventSource', events);
 
         });
+    }
+
+    function generateUuid(){
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function resetNewCalendarFields() {
+      vm.newCalendar = {};
+    }
+
+    function resetSelectedCalendarFields() {
+      vm.selectedCalendar = {};
+    }
+
+    function isInt(value) {
+      return !isNaN(value) && (function(x) {
+        return (x | 0) === x; 
+      })(parseFloat(value));
     }
 
   }

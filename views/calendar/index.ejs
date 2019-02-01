@@ -21,7 +21,35 @@
     <div class="row">
       <div class="col-lg-2">
         <div class="box box-solid box-primary">
+          <div class="box-header">
+              <%= __('my-calendars') %>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="modal" data-target=".create-calendar-modal">
+                    <i class="fa fa-plus"></i>
+                </button> 
+              </div>
+          </div>
+          <div class="box-body">
 
+            <form class="form-horizontal ng-cloak">
+                <div class="form-group btn-calendar" ng-repeat="calendar in vm.allCalendars" style="margin-bottom: 5px">
+                    <div class="col-xs-9">
+                        <label class="checkbox col-xs-12" style="padding-top: 0; padding-left: 30px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden">
+                            {{calendar.name}}
+                            <input type="checkbox" name="checkbox" ng-checked="calendar.active == true" ng-click="vm.changeCalendarState(calendar)" style="display: none">
+                            <span class="checkbox-checkmark" style="--checkbox-color: {{calendar.color}}"></span>
+                        </label>
+                    </div>
+
+                    <div class="col-xs-3" style="min-height: 30px;">
+                        <button type="button" class="btn btn-box-tool pull-right" ng-click="vm.selectedCalendar = calendar" data-toggle="modal" data-target=".update-calendar-modal">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+          </div>
         </div>
       </div>
       <div class="col-lg-10">
@@ -30,9 +58,121 @@
         </div>
       </div>
     </div>
+    
+    <div class="modal fade create-calendar-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="vm.resetNewCalendarFields();" data-dismiss="modal" aria-label="<%= __('Close') %>"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myLargeModalLabel"><%= __('create-calendrar') %></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">   
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">   
+                                <form class="form-horizontal ng-cloak" >
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('name') %></label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control" ng-model="vm.newCalendar.name">
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('description') %></label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" rows="2" ng-model="vm.newCalendar.description"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('color') %></label>
+                                        <div class="col-sm-8 control-label">
+                                            <color-picker class="form-control" type="text" ng-model="vm.newCalendar.color"></color-picker>
+                                        </div>
+                                    </div> 
+                                </form>      
+                            </div> 
+                            <div class="col-md-2"></div>
+                        </div>         
+                    </form>       
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-flat" ng-click="vm.createCalendar(vm.newCalendar);" data-dismiss="modal"><%= __('box-event-create') %></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade update-calendar-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="vm.resetSelectedCalendarFields();" data-dismiss="modal" aria-label="<%= __('Close') %>"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myLargeModalLabel"><%= __('edit-calendrar') %></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">   
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">   
+                                <form class="form-horizontal ng-cloak" >
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('Calendar') %></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" 
+                                                    ng-options="selectedCalendar as selectedCalendar.name for selectedCalendar in vm.allCalendars" 
+                                                    ng-model="vm.selectedCalendar">
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('name') %></label>
+                                        <div class="col-sm-8">
+                                          <input type="text" class="form-control" ng-model="vm.selectedCalendar.name">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('description') %></label>
+                                        <div class="col-sm-8">
+                                            <textarea class="form-control" rows="2" ng-model="vm.selectedCalendar.description"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><%= __('color') %></label>
+                                        <div class="col-sm-8 control-label">
+                                            <color-picker type="text" ng-model="vm.selectedCalendar.color"></color-picker>
+                                        </div>
+                                    </div> 
+                                </form>      
+                            </div>
+                            <div class="col-md-2"></div>      
+                        </div>         
+                    </form>       
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-flat" ng-click="vm.updateCalendar(vm.selectedCalendar);" data-dismiss="modal">Ok</button>
+                    <button class="btn btn-danger btn-flat" ng-click="vm.deleteCalendar({id: vm.selectedCalendar.id});" data-dismiss="modal"><%= __('Delete') %></button>
+                </div>
+            </div>
+        </div>
+    </div>
   </section>
 </aside>
+
+<style>
+    .btn-calendar div button{
+        display: none
+    }
+
+    .btn-calendar:hover div button{
+        display: block
+    }
+</style>
 
 <script>
     document.getElementById("calendarLi").className = "active";

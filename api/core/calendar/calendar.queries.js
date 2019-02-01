@@ -62,9 +62,9 @@ module.exports = {
     `,
 
   getAllEvents: `
-        SELECT calendarevent.*
+        SELECT calendarevent.*, calendar.color as color
         FROM calendarevent
-        INNER JOIN calendar ON(calendarevent.calendar = calendar.id)
+        INNER JOIN calendar ON(calendarevent.calendar = calendar.id AND color = calendar.color)
         WHERE user = ?
         AND calendar.active = 1 
         ORDER BY start;

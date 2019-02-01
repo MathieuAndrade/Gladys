@@ -611,5 +611,13 @@
   "house-box-saving": "Enregistrement en cours",
   "gateway-open-api": "Gladys Gateway Open API",
   "gateway-open-api-explanation": "Pour utiliser l'open API du Gladys Gateway, vous devez activer cette fonctionnalité ici. Par défaut, cette fonctionnalité est désactivée pour des raisons de sécurité.",
-  "gateway-open-api-activate": "Pour activer cette fonctionnalité, cliquez-ici"
+  "gateway-open-api-activate": "Pour activer cette fonctionnalité, cliquez-ici",
+  "name": "Nom",
+  "delete-calendrar": "Supprimer un calendrier",
+  "description": "Description",
+  "color": "Couleur",
+  "edit-calendrar": "Modifier un calendrier",
+  "create-calendrar": "Créer un calendrier",
+  "disable-all": "Tout désactiver",
+  "my-calendars": "Mes calendriers"
 }
